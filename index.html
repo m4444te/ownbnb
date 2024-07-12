@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>noisy-waterfall</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <style>
+      .dropdown-trigger {
+        width: 100%;
+      }
+      .dropdown-content {
+        width: 100%;
+      }
+      .modal {
+        display: none;
+      }
+      .modal.is-active {
+        display: flex;
+      }
+      .listing-card {
+        transition: transform 0.3s ease;
+      }
+      .listing-card:hover {
+        transform: translateX(10px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="navbar is-light">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="#"
+          ><span class="has-text-weight-bold">noisy-waterfall</span></a
+        >
+      </div>
+      <div class="navbar-menu">
+        <div class="navbar-end">
+          <a class="navbar-item">Aide</a>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Success Banner -->
+    <div
+      id="successBanner"
+      class="notification is-primary"
+      style="display: none"
+    ></div>
+
+    <!-- Listings -->
+    <section class="section">
+      <div class="container">
+        <div class="columns is-multiline">
+          <!-- Single Listing -->
+          <div class="column is-one-third" data-location="Paris - La Défense">
+            <div
+              class="card listing-card"
+              data-id="1"
+              data-title="Appartement à La Défense"
+              data-description="2 personnes · 1 canapé-lit · 1 salle de bain privée"
+              data-price="100 € / nuit"
+              data-image="assets/overview-ladefense.jpg"
+            >
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="assets/overview-ladefense.jpg" alt="Listing" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">Appartement à La Défense</p>
+                    <p class="subtitle is-6">
+                      2 personnes · 1 canapé-lit · 1 salle de bain privée
+                    </p>
+                  </div>
+                </div>
+                <div class="content">
+                  <p class="has-text">100 € / nuit</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- More listings here -->
+          <div class="column is-one-third" data-location="Paris - Montparnasse">
+            <div
+              class="card listing-card"
+              data-id="2"
+              data-title="Appartement à Montparnasse"
+              data-description="2 personnes · 1 canapé-lit · 1 salle de bain privée"
+              data-price="100 € / nuit"
+              data-image="assets/overview-montparnasse.jpg"
+            >
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="assets/overview-montparnasse.jpg" alt="Listing" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">Appartement à Montparnasse</p>
+                    <p class="subtitle is-6">
+                      2 personnes · 1 lit · 1 salle de bain privée
+                    </p>
+                  </div>
+                </div>
+                <div class="content">
+                  <p class="has-text">100 € / nuit</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column is-one-third" data-location="Aix-en-Provence">
+            <div
+              class="card listing-card"
+              data-id="3"
+              data-title="Chambre partagée"
+              data-description="1 personne · 1 lit · Accès aux communs"
+              data-price="25 € / nuit"
+              data-image="assets/overview-aix.png"
+            >
+              <div class="card-image">
+                <figure class="image is-4by3">
+                  <img src="assets/overview-aix.png" alt="Listing" />
+                </figure>
+              </div>
+              <div class="card-content">
+                <div class="media">
+                  <div class="media-content">
+                    <p class="title is-4">Chambre partagée</p>
+                    <p class="subtitle is-6">
+                      1 personne · 1 lit · Accès aux communs
+                    </p>
+                  </div>
+                </div>
+                <div class="content">
+                  <p class="has-text">25 € / nuit</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+      <div class="modal-background"></div>
+      <div class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title" id="modalTitle">Book Your Stay</p>
+          <button class="delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <figure class="image is-4by3" id="modalImage">
+            <img src="" alt="Listing" />
+          </figure>
+          <p id="modalDescription">Listing description...</p>
+          <p class="has-text" id="modalPrice">Price per night</p>
+          <form id="bookingForm">
+            <input type="hidden" name="title" id="formTitle" />
+            <input type="hidden" name="description" id="formDescription" />
+            <input type="hidden" name="price" id="formPrice" />
+            <input type="hidden" name="image" id="formImage" />
+            <div class="field">
+              <label class="label">Start Date</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="date"
+                  name="startDate"
+                  id="bookingStartDate"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">End Date</label>
+              <div class="control">
+                <input
+                  class="input"
+                  type="date"
+                  name="endDate"
+                  id="bookingEndDate"
+                  required
+                />
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Guests</label>
+              <div class="control">
+                <div class="select is-fullwidth">
+                  <select name="guestCount" id="guestCount">
+                    <option value="1">1 Guest</option>
+                    <option value="2">2 Guests</option>
+                    <option value="3">3 Guests</option>
+                    <option value="4">4 Guests</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="control">
+                <button class="button is-primary" type="submit">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </form>
+          <div
+            id="confirmationMessage"
+            class="message-primary"
+            style="display: none"
+          ></div>
+        </section>
+        <footer class="modal-card-foot">
+          <button
+            id="closeModalButton"
+            class="button is-primary"
+            style="display: none"
+          >
+            Close
+          </button>
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const listingCards = document.querySelectorAll(".listing-card");
+        const bookingModal = document.getElementById("bookingModal");
+        const modalTitle = document.getElementById("modalTitle");
+        const modalDescription = document.getElementById("modalDescription");
+        const modalPrice = document.getElementById("modalPrice");
+        const modalImage = document
+          .getElementById("modalImage")
+          .querySelector("img");
+        const formTitle = document.getElementById("formTitle");
+        const formDescription = document.getElementById("formDescription");
+        const formPrice = document.getElementById("formPrice");
+        const formImage = document.getElementById("formImage");
+        const confirmationMessage = document.getElementById(
+          "confirmationMessage"
+        );
+        const closeModalButton = document.getElementById("closeModalButton");
+        const successBanner = document.getElementById("successBanner");
+
+        listingCards.forEach((card) => {
+          card.addEventListener("click", () => {
+            const title = card.getAttribute("data-title");
+            const description = card.getAttribute("data-description");
+            const price = card.getAttribute("data-price");
+            const imageUrl = card.getAttribute("data-image");
+
+            modalTitle.textContent = title;
+            modalDescription.textContent = description;
+            modalPrice.textContent = price;
+            modalImage.src = imageUrl;
+
+            formTitle.value = title;
+            formDescription.value = description;
+            formPrice.value = price;
+            formImage.value = imageUrl;
+
+            confirmationMessage.textContent = ""; // Clear previous messages
+            confirmationMessage.style.display = "none"; // Hide previous messages
+            closeModalButton.style.display = "none"; // Hide close button
+
+            bookingModal.classList.add("is-active");
+          });
+        });
+
+        // Close modal
+        document
+          .querySelectorAll(
+            ".modal .delete, .modal-background, #closeModalButton"
+          )
+          .forEach((closeBtn) => {
+            closeBtn.addEventListener("click", () => {
+              bookingModal.classList.remove("is-active");
+            });
+          });
+
+        // Handle form submission
+        document
+          .getElementById("bookingForm")
+          .addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const response = await fetch(
+              "https://noisy-waterfall-3ec2.mate-cloudflare.workers.dev/",
+              {
+                method: "POST",
+                body: formData,
+              }
+            );
+            const result = await response.json();
+            if (result.success) {
+              // Clear the form fields
+              e.target.reset();
+
+              // Display the success banner
+              successBanner.textContent = result.message;
+              successBanner.style.display = "block";
+
+              // Close the modal
+              bookingModal.classList.remove("is-active");
+
+              // Hide the success banner after a delay
+              setTimeout(() => {
+                successBanner.style.display = "none";
+              }, 5000); // Adjust the delay as needed
+            } else {
+              confirmationMessage.textContent =
+                "An error occurred. Please try again.";
+              confirmationMessage.style.display = "block"; // Show the error message
+            }
+          });
+      });
+    </script>
+  </body>
+</html>
